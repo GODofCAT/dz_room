@@ -1,11 +1,14 @@
 package com.example.dz_room
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import org.jetbrains.annotations.NotNull
+
 @Entity
-@TypeConverters(DateConverter::class)
 class Item(
-    var key: Int? = null,
+    @PrimaryKey
+    @NotNull
+    var key: String,
+
     var value: String = ""
-){
-    @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-}
+)

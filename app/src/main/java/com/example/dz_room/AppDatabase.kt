@@ -1,4 +1,5 @@
 package com.example.somedatastorage
+import android.content.Context
 import androidx.room.*
 import androidx.room.Room.databaseBuilder
 import com.example.dz_room.Dao
@@ -11,20 +12,28 @@ abstract class AppDatabase : RoomDatabase() {
     abstract val dao: Dao
 
     companion object {
+
         @Volatile
-        var instance:AppDatabase?=null
-        get(){
-            var instance=field
-            return instance?: synchronized(this) { databaseBuilder(
-                        MainActivity.context,
+        var _instance: AppDatabase? = null
+
+        fun getInstance(context: Context): AppDatabase {
+            synchronized(this) {
+                var instance = _instance
+
+                if (instance == null) {
+
+                    instance = Room.databaseBuilder(
+                        context,
                         AppDatabase::class.java,
-                        "app_database"
+                        "Item"
                     ).fallbackToDestructiveMigration().build()
-                }.also { field=it }
+
+                    _instance = instance
+                }
+
+                return instance
+            }
+
         }
-
-
-
     }
-
 }
